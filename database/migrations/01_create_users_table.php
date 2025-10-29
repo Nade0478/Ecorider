@@ -13,7 +13,16 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('pseudo')->unique();
+            $table->string('telephone')->nullable();
+            $table->string('adresse')->nullable();
+            $table->string('photo')->nullable();
+            $table->string('credits')->default('0');
+            $table->string('statut_chauffeur')->default('active');
+            $table->string('statut_Passager')->default('active');
+            $table->string('statut_suspendu')->default('non');
+            $table->string('statut_inscription')->default('valide');
+            $table->string('date_inscription')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
