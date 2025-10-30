@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('configurations', function (Blueprint $table) {
             $table->id();
+            $table->integer('credits_total')->default(100);
+            $table->integer('credits-inscription')->default(20);
+            $table->date('date_derniere_maj', 8, 2)->default(0);
+            $table->integer('commission_trajet')->default(2);
             $table->timestamps();
         });
     }

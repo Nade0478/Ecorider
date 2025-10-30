@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('preferences', function (Blueprint $table) {
             $table->id();
+            $table->id ('user_id');
+            $table->id ('preference_id');
+            $table->string ('propriete');
+            $table->string ('valeur');
             $table->timestamps();
         });
     }

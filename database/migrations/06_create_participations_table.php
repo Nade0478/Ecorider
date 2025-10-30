@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('participations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('covoiturage_id');
+            $table->unsignedBigInteger('passager_id');
+            $table->date ('date_reservation');
+            $table->integer ('credits_utilises')->default(0);
+            $table->string ('statut');
+            $table->boolean('validation_trajet')->default(false);
+            $table->text('commentaires')->nullable();
             $table->timestamps();
         });
     }
