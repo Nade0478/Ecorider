@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id ('auteur_id');
             $table->id ('validateur_id');
             $table->id ('covoiturage_id');
-            $table->id ('cocerne_id');
+            $table->id ('concerne_id');
             $table->integer ('note')->default(0);
             $table->text('commentaire')->nullable();
             $table->boolean('statut_vide')->default(false);

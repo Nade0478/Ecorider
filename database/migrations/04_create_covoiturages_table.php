@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string ('statut');
             $table->string ('statut_ecologique');
             $table->id ('chauffeur_id');
-            $table->id ('vehicule_id');
+            $table->id ();
             $table->timestamps();
         });
     }
