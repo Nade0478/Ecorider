@@ -13,17 +13,23 @@ return new class extends Migration
     {
         Schema::create('avis', function (Blueprint $table) {
             $table->id();
-            $table->id ('auteur_id');
-            $table->id ('validateur_id');
-            $table->id ('covoiturage_id');
-            $table->id ('concerne_id');
-            $table->integer ('note')->default(0);
+            $table->unsignedBigInteger('auteur_id');
+            $table->unsignedBigInteger('validateur_id');
+            $table->unsignedBigInteger('covoiturage_id');
+            $table->unsignedBigInteger('concerne_id');
+            $table->integer('note')->default(0);
             $table->text('commentaire')->nullable();
             $table->boolean('statut_vide')->default(false);
-            $table->date ('date_creation');
-            $table->date ('date_validation');
+            $table->date('date_creation');
+            $table->date('date_validation');
             $table->timestamps();
+
+            $table->foreign('auteur_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('validateur_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('covoiturage_id')->references('id')->on('covoiturages')->onDelete('cascade');
+            $table->foreign('concerne_id')->references('id')->on('users')->onDelete('cascade');
         });
+
     }
 
     /**

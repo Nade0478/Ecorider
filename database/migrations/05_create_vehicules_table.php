@@ -18,10 +18,13 @@ return new class extends Migration
             $table->string('couleur');
             $table->string('type_carburant');
             $table->string('immatriculation')->unique();
-            $table->string('date_premiere_immatriculation');
-            $table->integer('nombre_places');
+            $table->date('date_premiere_immatriculation');
+            $table->unsignedTinyInteger('nombre_places')->default(4);
             $table->string('statut_ecologique');
+            $table->unsignedBigInteger('proprietaire_id');
             $table->timestamps();
+
+            $table->foreign('proprietaire_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

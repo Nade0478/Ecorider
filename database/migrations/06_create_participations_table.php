@@ -13,15 +13,27 @@ return new class extends Migration
     {
         Schema::create('participations', function (Blueprint $table) {
             $table->id();
+
+            // Relations obligatoires
             $table->unsignedBigInteger('covoiturage_id');
             $table->unsignedBigInteger('passager_id');
-            $table->date ('date_reservation');
-            $table->integer ('credits_utilises')->default(0);
-            $table->string ('statut');
+
+            // Données de participation
+            $table->date('date_reservation');
+            $table->integer('credits_utilises')->default(0);
+            $table->string('statut');
             $table->boolean('validation_trajet')->default(false);
             $table->text('commentaires')->nullable();
             $table->timestamps();
+
+            // Contraintes d'intégrité
+            $table->foreign('covoiturage_id')->references('id')->on('covoiturages')->onDelete('cascade');
+            $table->foreign('passager_id')->references('id')->on('users')->onDelete('cascade');
+
+            // Index pour les recherches
+            $table->index(['covoiturage_id', 'passager_id']);
         });
+
     }
 
     /**
