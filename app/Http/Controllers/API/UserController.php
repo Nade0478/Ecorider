@@ -37,6 +37,23 @@ class UserController extends Controller
             'date_inscription' => 'nullable|date',
         ]);
 
+        $filename = "";
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/photos', $filename);
+        }
+        else {
+            $filename = null;
+        }
+
+        $user = User::create(array_merge($request->all(), ['photo' => $filename]));
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $user,
+        ], 201);
+
         $user = User::create([
             'pseudo' => $request->pseudo,
             'email' => $request->email,

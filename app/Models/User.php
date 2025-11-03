@@ -54,4 +54,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function PhotoUrl() {
+        return $this->photo ? asset('storage/' . $this->photo) : null;
+    }
 }
