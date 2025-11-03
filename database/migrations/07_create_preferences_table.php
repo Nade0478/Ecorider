@@ -12,13 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('preferences', function (Blueprint $table) {
-            $table->id(); // clé primaire auto-incrémentée
-            $table->unsignedBigInteger('user_id'); // clé étrangère vers users
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('propriete');
             $table->string('valeur');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

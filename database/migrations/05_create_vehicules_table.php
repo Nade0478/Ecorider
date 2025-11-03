@@ -21,10 +21,8 @@ return new class extends Migration
             $table->date('date_premiere_immatriculation');
             $table->unsignedTinyInteger('nombre_places')->default(4);
             $table->string('statut_ecologique');
-            $table->unsignedBigInteger('proprietaire_id');
+            $table->foreignId('proprietaire_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
-
-            $table->foreign('proprietaire_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

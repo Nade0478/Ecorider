@@ -22,16 +22,11 @@ return new class extends Migration
             $table->decimal('prix', 8, 2);
             $table->string('statut');
             $table->string('statut_ecologique');
-            $table->unsignedBigInteger('chauffeur_id');
+            $table->foreignId('chauffeur_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
-
-            $table->foreign('chauffeur_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down(): void
     {
         Schema::dropIfExists('covoiturages');

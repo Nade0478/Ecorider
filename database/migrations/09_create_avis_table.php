@@ -19,8 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('concerne_id');
             $table->integer('note')->default(0);
             $table->text('commentaire')->nullable();
-            $table->boolean('statut_vide')->default(false);
-            $table->date('date_creation');
+            $table->boolean('statut_valide')->default(false);
             $table->date('date_validation');
             $table->timestamps();
 
@@ -29,12 +28,8 @@ return new class extends Migration
             $table->foreign('covoiturage_id')->references('id')->on('covoiturages')->onDelete('cascade');
             $table->foreign('concerne_id')->references('id')->on('users')->onDelete('cascade');
         });
-
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('avis');

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
 
             // Relations obligatoires
-            $table->unsignedBigInteger('covoiturage_id');
-            $table->unsignedBigInteger('passager_id');
+            $table->foreignId('covoiturage_id')->constrained('covoiturages')->onDelete('cascade');
+            $table->foreignId('passager_id')->constrained('users')->onDelete('cascade');
 
             // Données de participation
             $table->date('date_reservation');
@@ -26,14 +26,9 @@ return new class extends Migration
             $table->text('commentaires')->nullable();
             $table->timestamps();
 
-            // Contraintes d'intégrité
-            $table->foreign('covoiturage_id')->references('id')->on('covoiturages')->onDelete('cascade');
-            $table->foreign('passager_id')->references('id')->on('users')->onDelete('cascade');
-
             // Index pour les recherches
             $table->index(['covoiturage_id', 'passager_id']);
         });
-
     }
 
     /**

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('credits_total')->default(100);
             $table->integer('credits_inscription')->default(20);
-            $table->date('date_derniere_maj')->default(now());
+            $table->timestamp('date_derniere_maj')->useCurrent(); // corrigé ici
             $table->decimal('commission_trajet', 5, 2)->default(2.00);
             $table->timestamps();
         });

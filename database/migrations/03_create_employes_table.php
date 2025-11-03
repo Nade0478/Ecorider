@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('pseudo')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('statut_suspendu')->default('non');
+            $table->boolean('statut_suspendu')->default(false); 
             $table->timestamps();
         });
     }
