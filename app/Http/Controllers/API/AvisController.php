@@ -13,7 +13,8 @@ class AvisController extends Controller
      */
     public function index()
     {
-        //
+        $requests = Avis::all();
+        return response()->json($requests);
     }
 
     /**
@@ -21,7 +22,23 @@ class AvisController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'auteur_id' => 'required|integer',
+            'validateur_id' => 'required|integer',
+            'covoiturage_id' => 'required|integer',
+            'concerne_id' => 'required|integer',
+            'note' => 'required|integer|min:0|max:5',
+            'commentaire' => 'nullable|string',
+            'statut_vide' => 'required|boolean',
+            'date_creation' => 'required|date',
+            'date_validation' => 'nullable|date',
+        ]);
+
+        $avis = Avis::create($request->all());
+        return response()->json($avis, 201)([
+            'status' => 'success',
+            'data' => $avis
+        ]);
     }
 
     /**
@@ -29,7 +46,7 @@ class AvisController extends Controller
      */
     public function show(Avis $avis)
     {
-        //
+        return response()->json($avis);
     }
 
     /**
@@ -37,7 +54,23 @@ class AvisController extends Controller
      */
     public function update(Request $request, Avis $avis)
     {
-        //
+        $request->validate([
+            'auteur_id' => 'sometimes|integer',
+            'validateur_id' => 'sometimes|integer',
+            'covoiturage_id' => 'sometimes|integer',
+            'concerne_id' => 'sometimes|integer',
+            'note' => 'sometimes|integer|min:0|max:5',
+            'commentaire' => 'nullable|string',
+            'statut_vide' => 'sometimes|boolean',
+            'date_creation' => 'sometimes|date',
+            'date_validation' => 'nullable|date',
+        ]);
+
+        $avis->update($request->all());
+        return response()->json($avis)([
+            'status' => 'success',
+            'data' => $avis
+        ]);
     }
 
     /**
@@ -45,6 +78,9 @@ class AvisController extends Controller
      */
     public function destroy(Avis $avis)
     {
-        //
+        $avis->delete();
+        return response()->json(null, 204)([
+            'status' => 'success',
+        ]);
     }
 }

@@ -13,7 +13,8 @@ class EmployeController extends Controller
      */
     public function index()
     {
-        //
+        $employes = Employe::all();
+        return response()->json($employes);
     }
 
     /**
@@ -21,7 +22,17 @@ class EmployeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request-> validate([
+            'pseudo' => 'required|string|max:255|unique:employes',
+            'email' => 'required|string|email|max:255|unique:employes',
+            'password' => 'required|string|min:6',
+            'statut_suspendu' => 'sometimes|string|in:oui,non',
+        ]);
+        $employe = Employe::create($request->all());
+        return response()->json([
+            'status' => 'success',
+            'data' => $employe,
+        ], 201);
     }
 
     /**
@@ -29,7 +40,7 @@ class EmployeController extends Controller
      */
     public function show(Employe $employe)
     {
-        //
+        return response()->json($employe);
     }
 
     /**
@@ -37,7 +48,17 @@ class EmployeController extends Controller
      */
     public function update(Request $request, Employe $employe)
     {
-        //
+        $request-> validate([
+            'pseudo' => 'sometimes|required|string|max:255|unique:employes,pseudo,' . $employe->id,
+            'email' => 'sometimes|required|string|email|max:255|unique:employes,email,' . $employe->id,
+            'password' => 'sometimes|required|string|min:6',
+            'statut_suspendu' => 'sometimes|string|in:oui,non',
+        ]);
+        $employe->update($request->all());
+        return response()->json([
+            'status' => 'success',
+            'data' => $employe,
+        ]);
     }
 
     /**
@@ -45,6 +66,10 @@ class EmployeController extends Controller
      */
     public function destroy(Employe $employe)
     {
-        //
+        $employe->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Employe deleted successfully',
+        ]);
     }
 }

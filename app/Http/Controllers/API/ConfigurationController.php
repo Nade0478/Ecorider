@@ -13,7 +13,8 @@ class ConfigurationController extends Controller
      */
     public function index()
     {
-        //
+        $configurations = Configuration::all();
+        return response()->json($configurations);
     }
 
     /**
@@ -21,7 +22,18 @@ class ConfigurationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request-> validate([
+            'credits_total' => 'required|integer',
+            'credits_inscription' => 'required|integer',
+            'date_derniere_maj' => 'required|date',
+            'commission_trajet' => 'required|numeric',
+        ]);
+        $configuration = Configuration::create($request->all());
+        return response()->json($configuration, 201)([
+            'status' => 'success',
+            'data' => $configuration,
+        ]);
+
     }
 
     /**
@@ -29,7 +41,7 @@ class ConfigurationController extends Controller
      */
     public function show(Configuration $configuration)
     {
-        //
+        return response()->json($configuration);
     }
 
     /**
@@ -37,7 +49,17 @@ class ConfigurationController extends Controller
      */
     public function update(Request $request, Configuration $configuration)
     {
-        //
+        $request-> validate([
+            'credits_total' => 'sometimes|required|integer',
+            'credits_inscription' => 'sometimes|required|integer',
+            'date_derniere_maj' => 'sometimes|required|date',
+            'commission_trajet' => 'sometimes|required|numeric',
+        ]);
+        $configuration->update($request->all());
+        return response()->json([
+            'status' => 'success',
+            'data' => $configuration,
+        ]);
     }
 
     /**
@@ -45,6 +67,10 @@ class ConfigurationController extends Controller
      */
     public function destroy(Configuration $configuration)
     {
-        //
+        $configuration->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Configuration deleted successfully',
+        ]);
     }
 }

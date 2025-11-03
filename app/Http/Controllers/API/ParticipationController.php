@@ -13,7 +13,8 @@ class ParticipationController extends Controller
      */
     public function index()
     {
-        //
+        $participations = Participation::all();
+        return response()->json($participations);
     }
 
     /**
@@ -21,7 +22,20 @@ class ParticipationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request-> validate([
+            'covoiturage_id' => 'required|integer|exists:covoiturages,id',
+            'passager_id' => 'required|integer|exists:users,id',
+            'date_reservation' => 'required|date',
+            'credits_utilises' => 'sometimes|integer|min:0',
+            'statut' => 'required|string|max:255',
+            'validation_trajet' => 'sometimes|boolean',
+            'commentaires' => 'sometimes|string|nullable',
+        ]);
+        $participation = Participation::create($request->all());
+        return response()->json([
+            'status' => 'success',
+            'data' => $participation,
+        ], 201);
     }
 
     /**
@@ -29,7 +43,7 @@ class ParticipationController extends Controller
      */
     public function show(Participation $participation)
     {
-        //
+        return response()->json($participation);
     }
 
     /**
@@ -37,7 +51,20 @@ class ParticipationController extends Controller
      */
     public function update(Request $request, Participation $participation)
     {
-        //
+        $request-> validate([
+            'covoiturage_id' => 'sometimes|required|integer|exists:covoiturages,id',
+            'passager_id' => 'sometimes|required|integer|exists:users,id',
+            'date_reservation' => 'sometimes|required|date',
+            'credits_utilises' => 'sometimes|integer|min:0',
+            'statut' => 'sometimes|required|string|max:255',
+            'validation_trajet' => 'sometimes|boolean',
+            'commentaires' => 'sometimes|string|nullable',
+        ]);
+        $participation->update($request->all());
+        return response()->json([
+            'status' => 'success',
+            'data' => $participation,
+        ]);
     }
 
     /**
@@ -45,6 +72,10 @@ class ParticipationController extends Controller
      */
     public function destroy(Participation $participation)
     {
-        //
+        $participation->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Participation deleted successfully',
+        ]);
     }
 }

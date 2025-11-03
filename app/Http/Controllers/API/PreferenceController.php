@@ -13,7 +13,8 @@ class PreferenceController extends Controller
      */
     public function index()
     {
-        //
+        $preferences = Preference::all();
+        return response()->json($preferences);
     }
 
     /**
@@ -21,7 +22,16 @@ class PreferenceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request-> validate([
+            'user_id' => 'required|integer|exists:users,id',
+            'propriete' => 'required|string|max:255',
+            'valeur' => 'required|string|max:255',
+        ]);
+        $preference = Preference::create($request->all());
+        return response()->json([
+            'status' => 'success',
+            'data' => $preference,
+        ], 201);
     }
 
     /**
@@ -29,7 +39,7 @@ class PreferenceController extends Controller
      */
     public function show(Preference $preference)
     {
-        //
+        return response()->json($preference);
     }
 
     /**
@@ -37,7 +47,16 @@ class PreferenceController extends Controller
      */
     public function update(Request $request, Preference $preference)
     {
-        //
+        $request-> validate([
+            'user_id' => 'sometimes|required|integer|exists:users,id',
+            'propriete' => 'sometimes|required|string|max:255',
+            'valeur' => 'sometimes|required|string|max:255',
+        ]);
+        $preference->update($request->all());
+        return response()->json([
+            'status' => 'success',
+            'data' => $preference,
+        ]);
     }
 
     /**
@@ -45,6 +64,10 @@ class PreferenceController extends Controller
      */
     public function destroy(Preference $preference)
     {
-        //
+        $preference->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Preference deleted successfully',
+        ]);
     }
 }
