@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -28,50 +29,40 @@ class UserController extends Controller
             'password' => 'required|string|min:8',
             'telephone' => 'nullable|string|max:20',
             'adresse' => 'nullable|string|max:255',
-            'photo' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|max:2048',
             'credits' => 'nullable|integer',
             'statut_chauffeur' => 'nullable|string|max:50',
-            'statut_Passager' => 'nullable|string|max:50',
-            'statut_suspendu' => 'nullable|string|max:50',
+            'statut_passager' => 'nullable|string|max:50',
+            'statut_suspendu' => 'nullable|boolean',
             'statut_inscription' => 'nullable|string|max:50',
             'date_inscription' => 'nullable|date',
         ]);
 
-        $filename = "";
+        $filename = null;
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('public/photos', $filename);
         }
-        else {
-            $filename = null;
-        }
-
-        $user = User::create(array_merge($request->all(), ['photo' => $filename]));
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $user,
-        ], 201);
 
         $user = User::create([
             'pseudo' => $request->pseudo,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->password),
             'telephone' => $request->telephone,
             'adresse' => $request->adresse,
-            'photo' => $request->photo,
+            'photo' => $filename,
             'credits' => $request->credits ?? 0,
             'statut_chauffeur' => $request->statut_chauffeur ?? 'active',
-            'statut_Passager' => $request->statut_Passager ?? 'active',
-            'statut_suspendu' => $request->statut_suspendu ?? 'non',
+            'statut_passager' => $request->statut_passager ?? 'active',
+            'statut_suspendu' => $request->statut_suspendu ?? false,
             'statut_inscription' => $request->statut_inscription ?? 'valide',
             'date_inscription' => $request->date_inscription,
         ]);
 
         return response()->json([
             'status' => 'success',
-            'date' => $user,
+            'data' => $user,
         ], 201);
     }
 
@@ -94,17 +85,24 @@ class UserController extends Controller
             'password' => 'sometimes|required|string|min:8',
             'telephone' => 'nullable|string|max:20',
             'adresse' => 'nullable|string|max:255',
-            'photo' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|max:2048',
             'credits' => 'nullable|integer',
             'statut_chauffeur' => 'nullable|string|max:50',
-            'statut_Passager' => 'nullable|string|max:50',
-            'statut_suspendu' => 'nullable|string|max:50',
+            'statut_passager' => 'nullable|string|max:50',
+            'statut_suspendu' => 'nullable|boolean',
             'statut_inscription' => 'nullable|string|max:50',
             'date_inscription' => 'nullable|date',
         ]);
 
         if ($request->has('password')) {
-            $request->merge(['password' => bcrypt($request->password)]);
+            $request->merge(['password' => Hash::make($request->password)]);
+        }
+
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/photos', $filename);
+            $request->merge(['photo' => $filename]);
         }
 
         $user->update($request->all());
