@@ -16,6 +16,12 @@ class Vehicule extends Model
         'immatriculation',
         'date_premiere_immatriculation',
         'nombre_places',
-        'statut_ecologique'
+        'statut_ecologique',
+        'chauffeur_id',
     ];
+
+    public function chauffeur()
+    {
+        return $this->belongsTo(User::class, 'chauffeur_id');
+    }
 }

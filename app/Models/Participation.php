@@ -17,4 +17,13 @@ class Participation extends Model
         'validation_trajet',
         'commentaires'
     ];
+
+    public function covoiturage()
+    {
+        return $this->belongsTo(Covoiturage::class, 'covoiturage_id');
+    }
+    public function passager()
+    {
+        return $this->belongsTo(User::class, 'passager_id');
+    }
 }

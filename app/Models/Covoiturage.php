@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Covoiturage extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'ville_depart',
         'ville_arrivee',
@@ -19,6 +20,17 @@ class Covoiturage extends Model
         'statut',
         'statut_ecologique',
         'chauffeur_id',
-        'vehicule_id'
+        'vehicule_id',
     ];
+
+    public function chauffeur()
+    {
+        return $this->belongsTo(User::class, 'chauffeur_id');
+    }
+
+    public function vehicule()
+    {
+        return $this->belongsTo(Vehicule::class, 'vehicule_id');
+    }
 }
+
