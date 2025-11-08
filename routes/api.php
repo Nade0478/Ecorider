@@ -27,3 +27,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::apiResource('Preferences', PreferenceController::class);
     Route::apiResource('Avis', AvisController::class);
 
+    //Routes pour l'authentification accesible à tous
+
+    Route::post('register', [App\Http\Controllers\API\AuthController::class, 'register']);
+    Route::post('login', [App\Http\Controllers\API\AuthController::class, 'login']);
+
+    //Route d'authentification seulement accessible avec le JWT
+    Route::middleware('auth:api')->group(function () {
+        Route::get('/currentuser', [App\Http\Controllers\API\UserController::class, 'currentUser']);
+        Route::post('logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
+    });
+

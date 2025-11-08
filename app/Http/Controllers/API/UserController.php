@@ -6,9 +6,37 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 
 class UserController extends Controller
 {
+    private User $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * Get current authenticated user
+     */
+    public function currentUser()
+    {
+        /** @var JWTGuard $auth */
+        $auth = auth();
+
+        return response()->json([
+            'meta' => [
+                'code' => 200,
+                'status' => 'success',
+                'message' => 'User fetched successfully!',
+            ],
+            'data' => [
+                'user' => $auth->user(),
+            ],
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      */
