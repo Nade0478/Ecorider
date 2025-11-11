@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AdministrateurController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\API\AvisController;
 use App\Http\Controllers\API\ConfigurationController;
 use App\Http\Controllers\API\CovoiturageController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\API\VehiculeController;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PictureController;
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -38,3 +40,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::post('logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
     });
 
+
+    // //Image upload
+    // Route::post('/upload-image', [PictureController::class, 'store']);
+    // Route::get('/images', [PictureController::class, 'index']);
